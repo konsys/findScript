@@ -31,20 +31,6 @@ async function start() {
     ],
   });
 
-  const page = await browser.newPage();
-  await page._client.send("Page.setDownloadBehavior", {
-    behavior: "allow",
-    downloadPath,
-  });
-  page.on("dialog", async (dialog) => {
-    console.log(dialog.message());
-    await dialog.dismiss();
-  });
-  page.on("popup", async (dialog) => {
-    console.log("popup detected");
-    await dialog.close();
-  });
-
   const categories = JSON.parse(
     fs.readFileSync("C:\\Users\\ksysuev\\data\\categories.json")
   );
@@ -55,8 +41,28 @@ async function start() {
 
   let i = 0;
   for await (let email of emails) {
+    console.log("email", email);
     const category = categories[i];
-    const pathParams = getPaths(category);
+    console.log("Search phrase", category.name);
+    const pathParams = getPaths(category.name);
+    const downloadPath = pathParams.downloadPath;
+    const page = await browser.newPage();
+
+    await page._client.send("Page.setDownloadBehavior", {
+      behavior: "allow",
+      downloadPath,
+    });
+
+    page.on("dialog", async (dialog) => {
+      console.log(dialog.message());
+      await dialog.dismiss();
+    });
+
+    page.on("popup", async (dialog) => {
+      console.log("popup detected");
+      await dialog.close();
+    });
+
     try {
       fs.mkdirSync(pathParams.searchDir, 0744);
     } catch (e) {
@@ -79,7 +85,7 @@ async function start() {
     }
 
     i++;
-    await search(category, page);
+    await search(category.name, page);
 
     await loginYandex(page, email.email, email.pass);
 
@@ -111,6 +117,7 @@ async function start() {
         }
       }
     }
+    await page.close();
   }
   await browser.close();
   process.exit();

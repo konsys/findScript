@@ -5,7 +5,6 @@ const {
   videoNumFromSearch,
   searchJson,
 } = require("../utils/params");
-const { load } = require("../load");
 const { sampleSize } = require("lodash");
 const path = require("path");
 
