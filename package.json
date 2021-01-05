@@ -1,0 +1,38 @@
+{
+  "name": "yt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js",
+    "start-only": "node src/index.js",
+    "trim": "node src/video.handler/index.js",
+    "upload": "node src/upload/index.js",
+    "watcher": "nodemon src/watcher",
+    "watcher-only": "node src/watcher/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "fluent-ffmpeg": "^2.1.2",
+    "fluent-ffmpeg-filters": "^1.0.13",
+    "lodash": "^4.17.20",
+    "nanoid": "^3.1.19",
+    "puppeteer": "^5.0.0",
+    "puppeteer-page-proxy": "^1.2.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "docs/*",
+      "assets/*",
+      "src/video.handler/*"
+    ],
+    "delay": "1500"
+  }
+}
