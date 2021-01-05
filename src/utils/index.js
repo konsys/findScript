@@ -187,6 +187,32 @@ async function clearTrimmedDir() {
     }
   }
 }
+
+const getPaths = (searchPhrase) => {
+  const dir = searchPhrase.replace(/ /gi, "_");
+  const searchDir = path.resolve(`${__dirname}/../../assets/links/${dir}`);
+  const searchJson = path.resolve(
+    `${__dirname}/../../assets/links/${dir}/${dir}.json`
+  );
+  const downloadPath = path.resolve(
+    `${__dirname}/../../assets/links/${dir}/download`
+  );
+  const distPath = path.resolve(
+    `${__dirname}/../../assets/links/${dir}/distPath`
+  );
+  const trimmedPath = path.resolve(
+    `${__dirname}/../../assets/links/${dir}/trimmed`
+  );
+  return {
+    dir,
+    searchDir,
+    searchJson,
+    downloadPath,
+    distPath,
+    trimmedPath,
+  };
+};
+
 module.exports = {
   randSleep,
   getVideoLinks,
@@ -200,4 +226,5 @@ module.exports = {
   clearTrimmedDir,
   getYandexVideoLinks,
   randomInt,
+  getPaths,
 };

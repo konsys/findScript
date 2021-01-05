@@ -11,36 +11,13 @@ const {
   distPath,
   trimmedPath,
   searchDir,
-  searchJson,
-  searchPhrase,
 } = require("./utils/params");
 const fs = require("fs");
 const { load } = require("./load");
-const { clearDistDir, clearLoadDir } = require("./utils");
+const { clearDistDir, clearLoadDir, getPaths } = require("./utils");
 const { trim } = require("./video.handler");
 
 async function start() {
-  try {
-    fs.mkdirSync(searchDir, 0744);
-  } catch (e) {
-    // NOP
-  }
-  try {
-    fs.mkdirSync(downloadPath, 0744);
-  } catch (e) {
-    // NOP
-  }
-  try {
-    fs.mkdirSync(distPath, 0744);
-  } catch (e) {
-    // NOP
-  }
-  try {
-    fs.mkdirSync(trimmedPath, 0744);
-  } catch (e) {
-    // NOP
-  }
-
   console.log("Starting browser...");
   let browser = await puppeteer.launch({
     headless: false, // have window
@@ -79,57 +56,67 @@ async function start() {
     fs.readFileSync("C:\\Users\\ksysuev\\data\\emails.json")
   );
 
-  // for await (let category of categories) {
-  //   // console.log(category.name);
-  // }
-
   let i = 0;
   for await (let email of emails) {
     const category = categories[i];
+    const pathParams = getPaths(category);
+    try {
+      fs.mkdirSync(pathParams.searchDir, 0744);
+    } catch (e) {
+      // NOP
+    }
+    try {
+      fs.mkdirSync(pathParams.downloadPath, 0744);
+    } catch (e) {
+      // NOP
+    }
+    try {
+      fs.mkdirSync(pathParams.distPath, 0744);
+    } catch (e) {
+      // NOP
+    }
+    try {
+      fs.mkdirSync(pathParams.trimmedPath, 0744);
+    } catch (e) {
+      // NOP
+    }
+
     i++;
     await search(category, page);
-    console.log(email);
+
     await loginYandex(page, email.email, email.pass);
+
+    let links = JSON.parse(fs.readFileSync(pathParams.searchJson));
+
+    for await (let link of links) {
+      await clearDistDir();
+      await clearLoadDir();
+      try {
+        console.log("Loading file", link.id + link.fileExt);
+        await load(page, searchJson, links, link);
+        await trim(link.id + link.fileExt);
+      } catch (err) {
+        console.log("Error: ", err);
+      }
+      try {
+        await uploadYandex(page);
+      } catch (err) {
+        try {
+          await uploadYandex(page);
+        } catch (err) {
+          try {
+            await uploadYandex(page);
+          } catch (err) {
+            try {
+              await uploadYandex(page);
+            } catch (err) {}
+          }
+        }
+      }
+    }
   }
-
-  // await getProxy(page);
-  // await loginGoogle(page);
-
-  // let links = JSON.parse(fs.readFileSync(searchJson));
-
-  // for await (let link of links) {
-  //   await clearDistDir();
-  //   await clearLoadDir();
-  //   try {
-  //     console.log("Loading file", link.id + link.fileExt);
-  //     await load(page, searchJson, links, link);
-  //     await trim(link.id + link.fileExt);
-  //   } catch (err) {
-  //     console.log("Error: ", err);
-  //   }
-  //   try {
-  //     await uploadYandex(page);
-  //   } catch (err) {
-  //     try {
-  //       await uploadYandex(page);
-  //     } catch (err) {
-  //       try {
-  //         await uploadYandex(page);
-  //       } catch (err) {
-  //         try {
-  //           await uploadYandex(page);
-  //         } catch (err) {}
-  //       }
-  //     }
-  //   }
-  // }
-
-  // await uploadYandex(page);
-  // await browser.close();
+  await browser.close();
   process.exit();
 }
-
-// ivan.nepomnyashiy.87
-// 14.04.1987
 
 start();
