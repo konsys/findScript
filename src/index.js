@@ -92,7 +92,6 @@ async function start() {
       await clearDistDir(pathParams.distPath);
       await clearLoadDir(pathParams.downloadPath);
       try {
-        const fileExt = link.fileExt ? link.fileExt : "mp4";
         console.log("Loading file", link.id + link.fileExt);
         await load(
           page,
@@ -103,7 +102,7 @@ async function start() {
           pathParams.distPath
         );
         await trim(
-          link.id + fileExt,
+          link.id + link.fileExt,
           pathParams.trimmedPath,
           pathParams.distPath
         );
