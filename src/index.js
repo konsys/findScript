@@ -7,7 +7,6 @@ const {
   DEFAULT_ARGS,
   window_height,
   window_width,
-  downloadPath,
 } = require("./utils/params");
 const fs = require("fs");
 const { load } = require("./load");
@@ -41,7 +40,6 @@ async function start() {
 
   let i = 0;
   for await (let email of emails) {
-    console.log("email", email);
     const category = categories[i];
     console.log("Search phrase", category.name);
     const pathParams = getPaths(category.name);
@@ -54,12 +52,10 @@ async function start() {
     });
 
     page.on("dialog", async (dialog) => {
-      console.log(dialog.message());
       await dialog.dismiss();
     });
 
     page.on("popup", async (dialog) => {
-      console.log("popup detected");
       await dialog.close();
     });
 
@@ -85,18 +81,19 @@ async function start() {
     }
 
     i++;
-    await search(category.name, page);
+    await search(category.name, pathParams.searchJson, page);
 
     await loginYandex(page, email.email, email.pass);
 
     let links = JSON.parse(fs.readFileSync(pathParams.searchJson));
 
     for await (let link of links) {
+      console.log(222222, link);
       await clearDistDir();
       await clearLoadDir();
       try {
         console.log("Loading file", link.id + link.fileExt);
-        await load(page, searchJson, links, link);
+        await load(page, pathParams.searchJson, links, link);
         await trim(link.id + link.fileExt);
       } catch (err) {
         console.log("Error: ", err);

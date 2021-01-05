@@ -38,7 +38,7 @@ const chromeUserDirectory =
 
 const videoDownloadInterval = 20;
 const videoNumFromSearch = 10;
-const scrollDownSearch = 50;
+const scrollDownSearch = 5;
 
 module.exports = {
   DEFAULT_ARGS,

@@ -1,17 +1,10 @@
 const fs = require("fs");
 const { randSleep, getVideoLinks } = require("../utils");
-const {
-  scrollDownSearch,
-  videoNumFromSearch,
-  searchJson,
-} = require("../utils/params");
+const { scrollDownSearch, videoNumFromSearch } = require("../utils/params");
 const { sampleSize } = require("lodash");
 const path = require("path");
 
-async function search(searchPhrase, page) {
-  if (fs.existsSync(searchJson)) {
-    return;
-  }
+async function search(searchPhrase, searchJson, page) {
   await page.goto("https://youtube.com");
 
   const input = "#search-input > input";

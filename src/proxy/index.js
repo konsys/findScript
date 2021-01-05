@@ -62,7 +62,6 @@ async function getProxy() {
         })
         .map((v, k) => v.innerText);
 
-      console.log(1111111111, protocols);
       const ports = tds
         .filter((v, k) => {
           if (

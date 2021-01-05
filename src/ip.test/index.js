@@ -40,7 +40,6 @@ async function start() {
   await useProxy(page, `http://100.24.216.83:80`);
 
   // const data = await useProxy.lookup(page);
-  // console.log(2222222, data);
 
   console.log(proxies[0]);
 
