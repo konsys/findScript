@@ -110,7 +110,7 @@ const getVideoLinks = async (page, el = "ytd-video-renderer") => {
         uploaded: false,
         error: null,
         id: randId(),
-        fileExt: null,
+        fileExt: ".mp4",
       });
     });
     return retArr;

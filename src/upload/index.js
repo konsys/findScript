@@ -36,7 +36,7 @@ async function upload(page, jsonPath, site = "youtube", distPath) {
     console.log(error);
   }
 }
-async function uploadYandex(page, trimmedPath, searchJson) {
+async function uploadYandex(page, trimmedPath, searchJson, categoryNum) {
   let links = JSON.parse(fs.readFileSync(searchJson));
   let i = 0;
   for await (let link of links) {
@@ -86,13 +86,8 @@ async function uploadYandex(page, trimmedPath, searchJson) {
 
       await els[0].click();
       await randSleep();
-      const categories = {
-        Животные: 3,
-        Ремонт: 19,
-      };
 
-      // let categoryLink = `div[data-key='item-${categories['Животные']}']`;
-      let categoryLink = `div[data-key='item-${categories["Ремонт"]}']`;
+      let categoryLink = `div[data-key='item-${categoryNum}']`;
       let r1 = await page.$(categoryLink);
       await r1.click();
       await randSleep();
@@ -100,13 +95,12 @@ async function uploadYandex(page, trimmedPath, searchJson) {
       await els[1].click();
       await randSleep();
 
-      categoryLink = "div[data-key='item-0']";
+      categoryLink = "div[data-key='item-2']";
 
       r1 = await page.$$(categoryLink);
       await r1[1].click();
-      // await sleep(10000);
       console.log("Wait save button");
-      // const is_disabled = await page.$('button[disabled]') !== null;
+
       await randSleep();
       let [saveButton] = await page.$x("//button[contains(., 'Сохранить')]");
       let is_disabled = (await page.$$("button[disabled]")).length !== 0;

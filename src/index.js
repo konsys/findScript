@@ -10,7 +10,12 @@ const {
 } = require("./utils/params");
 const fs = require("fs");
 const { load } = require("./load");
-const { clearDistDir, clearLoadDir, getPaths } = require("./utils");
+const {
+  clearDistDir,
+  clearLoadDir,
+  getPaths,
+  clearTrimmedDir,
+} = require("./utils");
 const { trim } = require("./video.handler");
 
 async function start() {
@@ -38,9 +43,9 @@ async function start() {
     fs.readFileSync("C:\\Users\\ksysuev\\data\\emails.json")
   );
 
-  let i = 0;
+  let categoryNum = 0;
   for await (let email of emails) {
-    const category = categories[i];
+    const category = categories[categoryNum];
     console.log("Search phrase", category.name);
     const pathParams = getPaths(category.name);
     const downloadPath = pathParams.downloadPath;
@@ -80,17 +85,16 @@ async function start() {
       // NOP
     }
 
-    i++;
     await search(category.name, pathParams.searchJson, page);
 
-    // await loginYandex(page, email.email, email.pass);
+    await loginYandex(page, email.email, email.pass);
 
     let links = JSON.parse(fs.readFileSync(pathParams.searchJson));
 
     for await (let link of links) {
-      console.log(222222, link);
       await clearDistDir(pathParams.distPath);
       await clearLoadDir(pathParams.downloadPath);
+      await clearTrimmedDir(pathParams.trimmedPath);
       try {
         console.log("Loading file", link.id + link.fileExt);
         await load(
@@ -110,18 +114,25 @@ async function start() {
         console.log("Error: ", err);
       }
       try {
-        await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
+        await uploadYandex(
+          page,
+          pathParams.trimmedPath,
+          pathParams.searchJson,
+          categoryNum
+        );
       } catch (err) {
         try {
           await uploadYandex(
             page,
             pathParams.trimmedPath,
-            pathParams.searchJson
+            pathParams.searchJson,
+            categoryNum
           );
         } catch (err) {}
       }
     }
     await page.close();
+    categoryNum++;
   }
   await browser.close();
   process.exit();

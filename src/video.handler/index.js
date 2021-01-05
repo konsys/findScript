@@ -30,13 +30,8 @@ async function trimMe(file, output) {
   return new Promise((resolve, reject) => {
     const conv = new ffmpeg({ source: file });
     conv
-      // .complexFilter({
-      //   filter: "delogo",
-      //   options: { x: "500:y=450:w=250:h=100:show=0" },
-      //   inputs: "0:a",
-      // })
+
       .setStartTime("00:00:15")
-      // .setDuration("00:00:03")
       .on("start", function (commandLine) {
         console.log("Start trim file: " + commandLine);
       })
