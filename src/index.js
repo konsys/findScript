@@ -81,16 +81,16 @@ async function start() {
     }
 
     i++;
-    await search(category.name, pathParams.searchJson, page);
+    // await search(category.name, pathParams.searchJson, page);
 
-    await loginYandex(page, email.email, email.pass);
+    // await loginYandex(page, email.email, email.pass);
 
     let links = JSON.parse(fs.readFileSync(pathParams.searchJson));
 
     for await (let link of links) {
       console.log(222222, link);
-      await clearDistDir();
-      await clearLoadDir();
+      await clearDistDir(pathParams.distPath);
+      await clearLoadDir(pathParams.downloadPath);
       try {
         const fileExt = link.fileExt ? link.fileExt : "mp4";
         console.log("Loading file", link.id + link.fileExt);
@@ -110,33 +110,17 @@ async function start() {
       } catch (err) {
         console.log("Error: ", err);
       }
-      try {
-        await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
-      } catch (err) {
-        try {
-          await uploadYandex(
-            page,
-            pathParams.trimmedPath,
-            pathParams.searchJson
-          );
-        } catch (err) {
-          try {
-            await uploadYandex(
-              page,
-              pathParams.trimmedPath,
-              pathParams.searchJson
-            );
-          } catch (err) {
-            try {
-              await uploadYandex(
-                page,
-                pathParams.trimmedPath,
-                pathParams.searchJson
-              );
-            } catch (err) {}
-          }
-        }
-      }
+      // try {
+      //   await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
+      // } catch (err) {
+      //   try {
+      //     await uploadYandex(
+      //       page,
+      //       pathParams.trimmedPath,
+      //       pathParams.searchJson
+      //     );
+      //   } catch (err) {}
+      // }
     }
     await page.close();
   }

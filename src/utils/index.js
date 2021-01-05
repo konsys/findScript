@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { downloadPath, distPath, trimmedPath } = require("./params");
+// const { downloadPath, distPath, trimmedPath } = require("./params");
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -139,7 +139,7 @@ async function waitClick(page, id) {
   await randSleep();
 }
 
-async function clearLoadDir() {
+async function clearLoadDir(downloadPath) {
   try {
     const fsind = fs.readdirSync(downloadPath);
     console.log("UPLINK", downloadPath);
@@ -157,7 +157,7 @@ async function clearLoadDir() {
   }
 }
 
-async function clearDistDir() {
+async function clearDistDir(distPath) {
   try {
     const fsind = fs.readdirSync(distPath);
 
@@ -173,7 +173,7 @@ async function clearDistDir() {
   }
 }
 
-async function clearTrimmedDir() {
+async function clearTrimmedDir(trimmedPath) {
   const fsind = fs.readdirSync(trimmedPath);
 
   for await (let f of fsind) {
