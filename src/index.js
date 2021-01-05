@@ -8,9 +8,6 @@ const {
   window_height,
   window_width,
   downloadPath,
-  distPath,
-  trimmedPath,
-  searchDir,
 } = require("./utils/params");
 const fs = require("fs");
 const { load } = require("./load");

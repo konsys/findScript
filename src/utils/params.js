@@ -30,12 +30,9 @@ const DEFAULT_ARGS = [
 const window_height = 768;
 const window_width = 1366;
 
-// directory contains the videos you want to upload
-
 const assetsDir = path.resolve(`${__dirname}/../../assets/`);
 const assetsLinksDir = path.resolve(`${__dirname}/../../assets/links/`);
 
-// change user data directory to your directory
 const chromeUserDirectory =
   "C:\\Users\\ksysuev\\AppData\\Local\\Chromium\\User Data";
 
@@ -53,7 +50,4 @@ module.exports = {
   scrollDownSearch,
   assetsDir,
   assetsLinksDir,
-  getPaths,
 };
-
-// RamTamTam1-10
