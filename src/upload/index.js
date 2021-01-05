@@ -37,12 +37,11 @@ async function upload(page, jsonPath, site = "youtube", distPath) {
   }
 }
 async function uploadYandex(page, trimmedPath, searchJson) {
-  // await loginYandex(page);
   let links = JSON.parse(fs.readFileSync(searchJson));
   let i = 0;
   for await (let link of links) {
     try {
-      const fileType = trimmedPath + "\\" + link.id + ".mp4";
+      const fileType = trimmedPath + "\\" + link.id + link.fileExt;
       console.log("processing...", fileType);
 
       const tre = fs.existsSync(fileType);

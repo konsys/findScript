@@ -81,7 +81,7 @@ async function start() {
     }
 
     i++;
-    // await search(category.name, pathParams.searchJson, page);
+    await search(category.name, pathParams.searchJson, page);
 
     // await loginYandex(page, email.email, email.pass);
 
@@ -109,17 +109,17 @@ async function start() {
       } catch (err) {
         console.log("Error: ", err);
       }
-      // try {
-      //   await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
-      // } catch (err) {
-      //   try {
-      //     await uploadYandex(
-      //       page,
-      //       pathParams.trimmedPath,
-      //       pathParams.searchJson
-      //     );
-      //   } catch (err) {}
-      // }
+      try {
+        await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
+      } catch (err) {
+        try {
+          await uploadYandex(
+            page,
+            pathParams.trimmedPath,
+            pathParams.searchJson
+          );
+        } catch (err) {}
+      }
     }
     await page.close();
   }
