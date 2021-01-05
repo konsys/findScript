@@ -4,9 +4,8 @@ const {
   ifFileUploaded,
   waitForDownloadButton,
 } = require("../utils");
-const { downloadPath, distPath } = require("../utils/params");
 
-async function load(page, jsonPath, links, link) {
+async function load(page, jsonPath, links, link, downloadPath, distPath) {
   const searchInput = "#dlURL";
   try {
     if (link.uploaded === true) {

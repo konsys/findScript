@@ -92,23 +92,47 @@ async function start() {
       await clearDistDir();
       await clearLoadDir();
       try {
+        const fileExt = link.fileExt ? link.fileExt : "mp4";
         console.log("Loading file", link.id + link.fileExt);
-        await load(page, pathParams.searchJson, links, link);
-        await trim(link.id + link.fileExt);
+        await load(
+          page,
+          pathParams.searchJson,
+          links,
+          link,
+          pathParams.downloadPath,
+          pathParams.distPath
+        );
+        await trim(
+          link.id + fileExt,
+          pathParams.trimmedPath,
+          pathParams.distPath
+        );
       } catch (err) {
         console.log("Error: ", err);
       }
       try {
-        await uploadYandex(page);
+        await uploadYandex(page, pathParams.trimmedPath, pathParams.searchJson);
       } catch (err) {
         try {
-          await uploadYandex(page);
+          await uploadYandex(
+            page,
+            pathParams.trimmedPath,
+            pathParams.searchJson
+          );
         } catch (err) {
           try {
-            await uploadYandex(page);
+            await uploadYandex(
+              page,
+              pathParams.trimmedPath,
+              pathParams.searchJson
+            );
           } catch (err) {
             try {
-              await uploadYandex(page);
+              await uploadYandex(
+                page,
+                pathParams.trimmedPath,
+                pathParams.searchJson
+              );
             } catch (err) {}
           }
         }

@@ -1,14 +1,11 @@
-const { trimmedPath, distPath } = require("../utils/params");
-const { sleep } = require("../utils");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
-const vstack = require("fluent-ffmpeg-filters").vstack;
 const path = require("path");
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const fs = require("fs");
 
-async function trim(file) {
+async function trim(file, trimmedPath, distPath) {
   try {
     fs.mkdirSync(trimmedPath);
   } catch (err) {}

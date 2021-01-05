@@ -43,8 +43,6 @@ async function search(searchPhrase, searchJson, page) {
 
   links = sampleSize(links, videoNumFromSearch);
 
-  console.log("write", links);
-
   fs.writeFileSync(searchJson, JSON.stringify(links));
 
   return page;

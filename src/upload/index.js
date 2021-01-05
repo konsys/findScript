@@ -1,22 +1,10 @@
 const fs = require("fs");
-const puppeteer = require("puppeteer");
 const { randSleep, waitClick, sleep } = require("../utils");
-const { loginYandex } = require("../login");
-const {
-  chromeUserDirectory,
-  DEFAULT_ARGS,
-  window_height,
-  window_width,
-  searchPhrase,
-  distPath,
-  trimmedPath,
-  searchJson,
-} = require("../utils/params");
 
 const studioUrl = "https://studio.youtube.com/";
 const yandexUrl = "https://vh.yandex.ru/video/upload";
 
-async function upload(page, jsonPath, site = "youtube") {
+async function upload(page, jsonPath, site = "youtube", distPath) {
   console.log("Starting upload");
   let files = [];
   const dir = fs.readdirSync(distPath);
@@ -48,7 +36,7 @@ async function upload(page, jsonPath, site = "youtube") {
     console.log(error);
   }
 }
-async function uploadYandex(page) {
+async function uploadYandex(page, trimmedPath, searchJson) {
   // await loginYandex(page);
   let links = JSON.parse(fs.readFileSync(searchJson));
   let i = 0;
