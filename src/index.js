@@ -35,19 +35,17 @@ async function start() {
     ],
   });
 
-  const categories = JSON.parse(
-    fs.readFileSync("C:\\Users\\ksysuev\\data\\categories.json")
-  );
-
   const emails = JSON.parse(
     fs.readFileSync("C:\\Users\\ksysuev\\data\\emails.json")
   );
 
   let categoryNum = 0;
   for await (let email of emails) {
-    const category = categories[categoryNum];
-    console.log("Search phrase", category.name);
-    const pathParams = getPaths(category.name);
+    if (email.isActive === false) {
+      continue;
+    }
+    console.log("Search phrase", email.searchPhrase);
+    const pathParams = getPaths(email.searchPhrase);
     const downloadPath = pathParams.downloadPath;
     const page = await browser.newPage();
 
