@@ -123,7 +123,7 @@ try {
       await page.click("#close-button > div");
 
       // wait 60 seconds
-      await sleep(60 * 1000);
+      await sleep(15 * 1000);
     }
     await browser.close();
   })();

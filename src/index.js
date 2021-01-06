@@ -92,6 +92,13 @@ async function start() {
     let links = JSON.parse(fs.readFileSync(pathParams.searchJson));
 
     for await (let link of links) {
+      if (
+        link &&
+        link.title &&
+        link.title.toLowerCase().indexOf("фильм") > -1
+      ) {
+        continue;
+      }
       await clearDistDir(pathParams.distPath);
       await clearLoadDir(pathParams.downloadPath);
       await clearTrimmedDir(pathParams.trimmedPath);
