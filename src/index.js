@@ -39,7 +39,6 @@ async function start() {
     fs.readFileSync("C:\\Users\\ksysuev\\data\\emails.json")
   );
 
-  let categoryNum = 0;
   for await (let email of emails) {
     if (email.isActive === false) {
       continue;
@@ -83,7 +82,7 @@ async function start() {
       // NOP
     }
 
-    await search(category.name, pathParams.searchJson, page);
+    await search(email.searchPhrase, pathParams.searchJson, page);
 
     await loginYandex(page, email.email, email.pass);
 
@@ -123,7 +122,7 @@ async function start() {
           page,
           pathParams.trimmedPath,
           pathParams.searchJson,
-          categoryNum
+          email.categoryNum
         );
       } catch (err) {
         try {
@@ -131,13 +130,12 @@ async function start() {
             page,
             pathParams.trimmedPath,
             pathParams.searchJson,
-            categoryNum
+            email.categoryNum
           );
         } catch (err) {}
       }
     }
     await page.close();
-    categoryNum++;
   }
   await browser.close();
   process.exit();
