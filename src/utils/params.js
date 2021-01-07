@@ -37,8 +37,8 @@ const chromeUserDirectory =
   "C:\\Users\\ksysuev\\AppData\\Local\\Chromium\\User Data";
 
 const videoDownloadInterval = 20;
-const videoNumFromSearch = 10;
-const scrollDownSearch = 2;
+const videoNumFromSearch = 20;
+const scrollDownSearch = 40;
 
 module.exports = {
   DEFAULT_ARGS,
